@@ -29,6 +29,10 @@ type ErroCEP struct {
 	Erro bool `json:"erro"`
 }
 
+type ErroCEP2 struct {
+	Erro string `json:"erro"`
+}
+
 type Weather struct {
 	Location struct {
 		Name           string  `json:"name"`
@@ -111,6 +115,11 @@ func BuscaCep(cep string) (*Weather, error) {
 	// Se for um erro, deserializa para a estrutura de erro
 	var erroResp ErroCEP
 	if json.Unmarshal(body, &erroResp) == nil && erroResp.Erro {
+
+		return nil, fmt.Errorf("can not find zipcode")
+	}
+	var erroResp2 ErroCEP2
+	if json.Unmarshal(body, &erroResp2) == nil && erroResp2.Erro != "" {
 
 		return nil, fmt.Errorf("can not find zipcode")
 	}
